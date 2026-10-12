@@ -10,6 +10,10 @@ TubeX is a fast, minimalist terminal app for searching YouTube videos and stream
 - **Clean Terminal UI**: Modern slate theme with clear visual hierarchy, channel labels, and duration tags
 - **Custom Result Count**: Set custom result counts with `: N` syntax (e.g. `lo-fi beats : 15`)
 
+## preview
+![Tubex Preview](demo.png)
+
+
 ## Run It
 
 ```bash
@@ -42,3 +46,24 @@ Examples:
 - `textual`
 - `yt-dlp`
 - `mpv`
+
+## Installation (Arch Linux)
+
+Directly clone the repository, install dependencies via pacman, and set up the `tubex` alias with a single command:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/DevBarik731/Tubex/main/install.sh | bash
+```
+
+Or using `bash -c`:
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/DevBarik731/Tubex/main/install.sh)"
+```
+
+Then reload your shell configuration (or restart your terminal) and run:
+
+```bash
+source ~/.zshrc   # for Zsh (or source ~/.bashrc for Bash)
+tubex
+```
