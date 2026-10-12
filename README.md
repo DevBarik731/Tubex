@@ -11,7 +11,7 @@ TubeX is a fast, minimalist terminal app for searching YouTube videos and stream
 - **Custom Result Count**: Set custom result counts with `: N` syntax (e.g. `lo-fi beats : 15`)
 
 ## preview
-![Tubex Preview](demo.png)
+![Tubex Preview](demo.jpeg)
 
 
 ## Run It
