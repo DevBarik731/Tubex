@@ -53,18 +53,9 @@ Examples:
 
 ## Installation (Arch Linux)
 
-Directly clone the repository, install dependencies via pacman, and set up the `tubex` alias with a single command:
-
 ```bash
-curl -sSL https://raw.githubusercontent.com/DevBarik731/Tubex/main/install.sh | bash
+git clone https://github.com/DevBarik731/Tubex.git && cd Tubex && chmod +x install.sh && ./install.sh
 ```
-
-Or using `bash -c`:
-
-```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/DevBarik731/Tubex/main/install.sh)"
-```
-
 Then reload your shell configuration (or restart your terminal) and run:
 
 ```bash
