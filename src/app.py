@@ -304,13 +304,31 @@ class TubeXApp(App):
         selected_video = self.search_results[index]
         self.play_video_item(selected_video)
 
+    @work(thread=True)
+    def start_playback(self, video: VideoItem, resolution_id: str) -> None:
+        """Resolve stream formats and launch mpv in a background thread."""
+        res = get_resolution(resolution_id)
+        self.call_from_thread(
+            self.set_status,
+            f"Resolving streams [{res.name}] for: {video.title}...",
+        )
+        try:
+            proc = play_video(video, resolution_id)
+            fmt = getattr(proc, "format_used", res.name)
+            self.call_from_thread(
+                self.set_status,
+                f"Playing in mpv [{fmt}]: {video.title}",
+            )
+        except RuntimeError as exc:
+            self.call_from_thread(self.set_status, str(exc))
+        except Exception as exc:
+            self.call_from_thread(self.set_status, f"Playback error: {exc}")
+
     def play_video_item(self, video: VideoItem) -> None:
         """Stream video via mpv with current resolution."""
         res = get_resolution(self.current_resolution_id)
         self.set_status(f"Opening in mpv [{res.name}]: {video.title}")
-        try:
+        if self.is_running:
+            self.start_playback(video, self.current_resolution_id)
+        else:
             play_video(video, self.current_resolution_id)
-        except RuntimeError as exc:
-            self.set_status(str(exc))
-        except Exception as exc:
-            self.set_status(f"Playback error: {exc}")

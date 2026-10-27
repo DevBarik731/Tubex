@@ -5,19 +5,26 @@ import subprocess
 
 from src.config import DEFAULT_RESOLUTION_ID, get_resolution
 from src.models import VideoItem
+from src.youtube import get_playback_format
 
 
-def play_video(video: VideoItem, resolution_id: str = DEFAULT_RESOLUTION_ID) -> subprocess.Popen:
+def play_video(
+    video: VideoItem,
+    resolution_id: str = DEFAULT_RESOLUTION_ID,
+    format_override: str | None = None,
+) -> subprocess.Popen:
     """Launch mpv to stream the given video with the specified resolution.
 
+    Resolves optimal video + audio streams (VID_ID+AUDIO_ID) to avoid HTTP 403 errors.
     Returns the spawned subprocess.Popen instance.
     """
     res_option = get_resolution(resolution_id)
+    format_str = format_override or get_playback_format(video.url, resolution_id)
 
     cmd = [
         "mpv",
         "--ytdl=yes",
-        f"--ytdl-format={res_option.format_str}",
+        f"--ytdl-format={format_str}",
         "--really-quiet",
         f"--title=TubeX: ${{media-title}} [{res_option.name}]",
     ]
@@ -34,6 +41,7 @@ def play_video(video: VideoItem, resolution_id: str = DEFAULT_RESOLUTION_ID) -> 
             cmd,
             start_new_session=True,
         )
+        proc.format_used = format_str  # type: ignore[attr-defined]
         return proc
     except FileNotFoundError as exc:
         raise RuntimeError("mpv media player was not found. Please install mpv to play videos.") from exc
